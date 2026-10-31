@@ -60,6 +60,7 @@ def main() -> int:
     try:
         import numpy as np
         import torch
+        from tqdm.auto import tqdm
 
         if REPO not in sys.path:
             sys.path.insert(0, REPO)
@@ -169,7 +170,11 @@ def main() -> int:
     try:
         latent_cache = None
         n_groups = coc.shape[0]
-        for i in range(0, n_groups, infer_clip_num):
+        # One tick per batch (UNet pass + chunked VAE decode) -> the console shows elapsed time,
+        # frames/s and an ETA instead of looking frozen. Progress goes to stderr.
+        n_batches = (n_groups + infer_clip_num - 1) // infer_clip_num
+        for i in tqdm(range(0, n_groups, infer_clip_num), total=n_batches,
+                      desc="any2bokeh", unit="batch", file=sys.stderr):
             is_last_batch = i + infer_clip_num >= n_groups
             w = weight[i:i + infer_clip_num].to(dtype).to(device, non_blocking=True)
             control = coc[i:i + infer_clip_num].to(device, non_blocking=True)

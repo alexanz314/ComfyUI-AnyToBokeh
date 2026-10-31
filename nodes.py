@@ -423,9 +423,12 @@ class AnyToBokehGenerate:
                 raise ValueError(f"python_bin not found: {py}")
             mm.unload_all_models()
             mm.soft_empty_cache()
+            # stdout carries the single JSON status line and is captured; stderr (the tqdm progress
+            # bar, progress lines, warnings) is deliberately NOT captured, so it appears in the
+            # ComfyUI console while the render runs.
             proc = subprocess.run(
                 [py, RUNNER, "--job", job_path],
-                capture_output=True, text=True, timeout=int(timeout_minutes) * 60,
+                stdout=subprocess.PIPE, text=True, timeout=int(timeout_minutes) * 60,
             )
             tail = [ln for ln in proc.stdout.strip().splitlines() if ln.strip()]
             status = None
@@ -437,7 +440,7 @@ class AnyToBokehGenerate:
             if status is None or not status.get("ok"):
                 err = (status or {}).get("error", "no status line from runner")
                 tb = (status or {}).get("traceback", "")
-                raise RuntimeError(f"Any-to-Bokeh runner failed: {err}\n{tb}\n--- stderr ---\n{proc.stderr[-4000:]}")
+                raise RuntimeError(f"Any-to-Bokeh runner failed: {err}\n{tb}")
         else:
             import contextlib
             import io
