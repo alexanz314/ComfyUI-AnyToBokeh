@@ -1,0 +1,21 @@
+# ComfyUI-AnyToBokeh_v2 runtime requirements.
+#
+# What the code actually imports (checked over nodes.py, a2b/prepare.py, runner/ and the vendored
+# any2bokeh_repo/): torch, numpy, diffusers, transformers, einops, Pillow. huggingface_hub is only
+# used by scripts/download_weights.sh.
+#
+# Upstream pins diffusers==0.25.0 / transformers==4.32.1. Do NOT install those pins into the
+# ComfyUI venv: any2bokeh_repo/a2b_compat.py aliases the module paths that moved, so the vendored
+# code runs unmodified on the modern stack (verified on diffusers 0.39.0 / transformers 5.13.1).
+# Downgrading diffusers in the ComfyUI venv can break unrelated custom nodes.
+#
+# torch is already present in any ComfyUI install; pip sees the constraint satisfied and does not
+# touch it (no CUDA wheel is re-downloaded).
+
+torch>=2.1
+numpy
+diffusers>=0.35          # vendored code imports through a2b_compat aliases; verified on 0.39.0
+transformers>=4.40       # CLIPImageProcessor / CLIPVisionModelWithProjection; verified on 5.13.1
+einops                   # a2b_models/attention.py
+Pillow                   # PIL.Image in the vendored pipeline
+huggingface_hub>=0.24    # scripts/download_weights.sh (snapshot_download with allow_patterns)
