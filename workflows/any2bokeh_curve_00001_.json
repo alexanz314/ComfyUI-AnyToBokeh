@@ -1,0 +1,1130 @@
+{
+  "id": "7667f705-7373-4662-a88d-956e8e99bee0",
+  "revision": 0,
+  "last_node_id": 30,
+  "last_link_id": 43,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadVideo",
+      "pos": [
+        -8.520067901097109,
+        130.93152423218228
+      ],
+      "size": [
+        438.3736328125,
+        82
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "title": "Load Video (upstream demo _Dh3EhO6vbY_69, 240 frames)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "LoadVideo"
+      },
+      "widgets_values": [
+        "a2b_demo_Dh3EhO6vbY_69.mp4",
+        "image"
+      ],
+      "widgets_values_named": {
+        "file": "a2b_demo_Dh3EhO6vbY_69.mp4",
+        "upload": "image"
+      }
+    },
+    {
+      "id": 2,
+      "type": "GetVideoComponents",
+      "pos": [
+        482.798828125,
+        130
+      ],
+      "size": [
+        193.530859375,
+        106
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            20,
+            26,
+            39
+          ]
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            30
+          ]
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "name": "bit_depth",
+          "type": "COMBO",
+          "links": null
+        },
+        {
+          "name": "color_space",
+          "type": "COMBO",
+          "links": null
+        }
+      ],
+      "title": "GetVideoComponents",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "GetVideoComponents"
+      }
+    },
+    {
+      "id": 3,
+      "type": "LoadDA3Model",
+      "pos": [
+        100,
+        342
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "DA3_MODEL",
+          "type": "DA3_MODEL",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "title": "LoadDA3Model",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "LoadDA3Model"
+      },
+      "widgets_values": [
+        "depth_anything_3_mono_large.safetensors",
+        "default"
+      ],
+      "widgets_values_named": {
+        "model_name": "depth_anything_3_mono_large.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    {
+      "id": 4,
+      "type": "DA3Inference",
+      "pos": [
+        776.3296875,
+        130
+      ],
+      "size": [
+        270,
+        126
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "da3_model",
+          "type": "DA3_MODEL",
+          "link": 19
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "da3_geometry",
+          "type": "DA3_GEOMETRY",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "title": "DA3Inference",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "DA3Inference"
+      },
+      "widgets_values": [
+        504,
+        "lower_bound_resize",
+        "mono"
+      ],
+      "widgets_values_named": {
+        "resolution": 504,
+        "resize_method": "lower_bound_resize",
+        "mode": "mono"
+      }
+    },
+    {
+      "id": 5,
+      "type": "AnyToBokehDisparity",
+      "pos": [
+        1146.3296875,
+        130
+      ],
+      "size": [
+        337.4146484375,
+        78
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "da3_geometry",
+          "shape": 7,
+          "type": "DA3_GEOMETRY",
+          "link": 21
+        },
+        {
+          "name": "depth_image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "disparity",
+          "type": "A2B_DISPARITY",
+          "links": [
+            23,
+            27,
+            35
+          ]
+        },
+        {
+          "name": "preview",
+          "type": "IMAGE",
+          "links": [
+            32
+          ]
+        }
+      ],
+      "title": "AnyToBokehDisparity",
+      "properties": {
+        "Node name for S&R": "AnyToBokehDisparity"
+      },
+      "widgets_values": [
+        "depth: larger = farther (DA3 / MoGe)"
+      ],
+      "widgets_values_named": {
+        "convention": "depth: larger = farther (DA3 / MoGe)"
+      }
+    },
+    {
+      "id": 11,
+      "type": "AnyToBokehLoadModel",
+      "pos": [
+        100,
+        554
+      ],
+      "size": [
+        412.3127253271499,
+        159.00395300837033
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "a2b_model",
+          "type": "A2B_PIPE",
+          "links": [
+            25
+          ]
+        }
+      ],
+      "title": "AnyToBokehLoadModel",
+      "properties": {
+        "Node name for S&R": "AnyToBokehLoadModel"
+      },
+      "widgets_values": [
+        "/home/user/work/ComfyUI/models/any2bokeh/unet",
+        "/home/user/work/ComfyUI/models/any2bokeh/vae",
+        "/home/user/work/ComfyUI/models/any2bokeh/svd_xt",
+        "float16",
+        "fp16"
+      ],
+      "widgets_values_named": {
+        "unet_dir": "/home/user/work/ComfyUI/models/any2bokeh/unet",
+        "vae_dir": "/home/user/work/ComfyUI/models/any2bokeh/vae",
+        "svd_dir": "/home/user/work/ComfyUI/models/any2bokeh/svd_xt",
+        "dtype": "float16",
+        "svd_variant": "fp16"
+      }
+    },
+    {
+      "id": 12,
+      "type": "AnyToBokehPreviewCoC",
+      "pos": [
+        2132.0310546875003,
+        130
+      ],
+      "size": [
+        323.5376953125,
+        146
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "disparity",
+          "type": "A2B_DISPARITY",
+          "link": 23
+        },
+        {
+          "name": "focus",
+          "type": "A2B_FOCUS",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "coc",
+          "type": "IMAGE",
+          "links": [
+            33
+          ]
+        },
+        {
+          "name": "mpi_regions",
+          "type": "IMAGE",
+          "links": [
+            34
+          ]
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "Check CoC / MPI (works without weights)",
+      "properties": {
+        "Node name for S&R": "AnyToBokehPreviewCoC"
+      },
+      "widgets_values": [
+        16,
+        1.5,
+        ""
+      ],
+      "widgets_values_named": {
+        "k": 16,
+        "mpi_alpha": 1.5,
+        "k_per_frame": ""
+      }
+    },
+    {
+      "id": 13,
+      "type": "AnyToBokehGenerate",
+      "pos": [
+        2132.0310546875003,
+        406
+      ],
+      "size": [
+        370.835546875,
+        502
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "a2b_model",
+          "type": "A2B_PIPE",
+          "link": 25
+        },
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 26
+        },
+        {
+          "name": "disparity",
+          "type": "A2B_DISPARITY",
+          "link": 27
+        },
+        {
+          "name": "focus",
+          "type": "A2B_FOCUS",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            40
+          ]
+        },
+        {
+          "name": "coc_preview",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "AnyToBokehGenerate",
+      "properties": {
+        "Node name for S&R": "AnyToBokehGenerate"
+      },
+      "widgets_values": [
+        16,
+        576,
+        1024,
+        "subprocess: isolated venv (recommended)",
+        "",
+        8,
+        4,
+        2,
+        1,
+        127,
+        7,
+        0,
+        110390101746750,
+        "randomize",
+        1.5,
+        "/home/user/work/ComfyUI/venv/bin/python",
+        120
+      ],
+      "widgets_values_named": {
+        "k": 16,
+        "height": 576,
+        "width": 1024,
+        "backend": "subprocess: isolated venv (recommended)",
+        "k_per_frame": "",
+        "group_frames": 8,
+        "overlap_frames": 4,
+        "infer_clip_num": 2,
+        "num_inference_steps": 1,
+        "motion_bucket_id": 127,
+        "fps": 7,
+        "noise_aug_strength": 0,
+        "seed": 110390101746750,
+        "control_after_generate": "randomize",
+        "mpi_alpha": 1.5,
+        "python_bin": "/home/user/work/ComfyUI/venv/bin/python",
+        "timeout_minutes": 120
+      },
+      "color": "#009933"
+    },
+    {
+      "id": 14,
+      "type": "CreateVideo",
+      "pos": [
+        2850.313994865024,
+        613.1554648181402
+      ],
+      "size": [
+        270,
+        150
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 43
+        },
+        {
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            31
+          ]
+        }
+      ],
+      "title": "CreateVideo",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        24,
+        "auto",
+        "sRGB",
+        "none"
+      ],
+      "widgets_values_named": {
+        "fps": 24,
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "codec": "none"
+      }
+    },
+    {
+      "id": 15,
+      "type": "SaveVideo",
+      "pos": [
+        3237.0560345143144,
+        392.67119110239025
+      ],
+      "size": [
+        474.02657816830833,
+        364.63995021967344
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 31
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "title": "SaveVideo",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/any2bokeh_curve",
+        "auto",
+        "auto",
+        "auto"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "video/any2bokeh_curve",
+        "format": "auto",
+        "format.codec": "auto",
+        "codec": "auto"
+      }
+    },
+    {
+      "id": 16,
+      "type": "PreviewImage",
+      "pos": [
+        1273.7866947493958,
+        772.9198805866538
+      ],
+      "size": [
+        154.93515625,
+        26
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 32
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "title": "Disparity preview",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 17,
+      "type": "PreviewImage",
+      "pos": [
+        2602.8666015625004,
+        130
+      ],
+      "size": [
+        215.3033203125,
+        26
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 33
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "title": "CoC (white = out of focus)",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 18,
+      "type": "PreviewImage",
+      "pos": [
+        2602.8666015625004,
+        286
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "title": "MPI regions",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.37.0",
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 20,
+      "type": "AnyToBokehFocusControl",
+      "pos": [
+        1580.6204113845768,
+        130.57205277087567
+      ],
+      "size": [
+        450.323828125,
+        620
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "disparity",
+          "type": "A2B_DISPARITY",
+          "link": 35
+        }
+      ],
+      "outputs": [
+        {
+          "name": "focus",
+          "type": "A2B_FOCUS",
+          "links": [
+            36,
+            37
+          ]
+        },
+        {
+          "name": "curve",
+          "type": "IMAGE",
+          "links": null
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AnyToBokehFocusControl"
+      },
+      "widgets_values": [
+        "0:0.75;75:0.5;200:0.0",
+        "linear",
+        0,
+        null
+      ],
+      "widgets_values_named": {
+        "keyframes": "0:0.75;75:0.5;200:0.0",
+        "interpolation": "linear",
+        "clip_frames": 0,
+        "focus_curve_reserved": null
+      }
+    },
+    {
+      "id": 23,
+      "type": "MarkdownNote",
+      "pos": [
+        -642.1480475720673,
+        121.6784971861363
+      ],
+      "size": [
+        560,
+        900
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "Any-to-Bokeh: MANUAL rack focus (schedule / keyframes)",
+      "properties": {},
+      "widgets_values": [
+        "> Nodes from https://github.com/alexanz314/ComfyUI-AnyToBokeh\n\n# Any-to-Bokeh - rack focus without regeneration\n\n**Upstream** [vivoCameraResearch/any-to-bokeh](https://github.com/vivoCameraResearch/any-to-bokeh) - **Paper** [arXiv:2505.21593](https://arxiv.org/abs/2505.21593) (ICLR 2026)\n\nSharp master -> depth (DA3) -> focal plane -> bokeh. The master stays **frozen**, so the subject cannot drift between takes: re-rendering a new focal plane is a deterministic pass, not a regeneration.\n\n---\n\n## Required files\n\n| # | Path | Source |\n|---|---|---|\n| 1 | `models/any2bokeh/unet/` (7.5 GB) | upstream Google Drive, see their README |\n| 2 | `models/any2bokeh/vae/` (393 MB) | same archive |\n| 3 | `models/any2bokeh/svd_xt/` | [stabilityai/stable-video-diffusion-img2vid-xt](https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt) |\n| 4 | `models/geometry_estimation/depth_anything_3_mono_large.safetensors` | [Comfy-Org/Depth-Anything-3](https://huggingface.co/Comfy-Org/Depth-Anything-3) |\n| 5 | `models/checkpoints/sam3.1_multiplex_fp16.safetensors` | [Comfy-Org/sam3.1](https://huggingface.co/Comfy-Org/sam3.1) |\n\n### SVD-XT: fetch only the slice diffusers needs (~1.2 GiB, not 21.5 GiB)\n\n```\n/home/user/work/ComfyUI/venv/bin/hf download stabilityai/stable-video-diffusion-img2vid-xt \\\n  --local-dir /home/user/work/ComfyUI/models/any2bokeh/svd_xt \\\n  --include \"model_index.json\" \"LICENSE.md\" \"scheduler/*\" \"feature_extractor/*\" \\\n            \"image_encoder/config.json\" \"image_encoder/model.fp16.safetensors\" \\\n            \"unet/config.json\" \"vae/config.json\"\n```\n\n"
+      ],
+      "widgets_values_named": {
+        "text": "> Nodes from https://github.com/alexanz314/ComfyUI-AnyToBokeh\n\n# Any-to-Bokeh - rack focus without regeneration\n\n**Upstream** [vivoCameraResearch/any-to-bokeh](https://github.com/vivoCameraResearch/any-to-bokeh) - **Paper** [arXiv:2505.21593](https://arxiv.org/abs/2505.21593) (ICLR 2026)\n\nSharp master -> depth (DA3) -> focal plane -> bokeh. The master stays **frozen**, so the subject cannot drift between takes: re-rendering a new focal plane is a deterministic pass, not a regeneration.\n\n---\n\n## Required files\n\n| # | Path | Source |\n|---|---|---|\n| 1 | `models/any2bokeh/unet/` (7.5 GB) | upstream Google Drive, see their README |\n| 2 | `models/any2bokeh/vae/` (393 MB) | same archive |\n| 3 | `models/any2bokeh/svd_xt/` | [stabilityai/stable-video-diffusion-img2vid-xt](https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt) |\n| 4 | `models/geometry_estimation/depth_anything_3_mono_large.safetensors` | [Comfy-Org/Depth-Anything-3](https://huggingface.co/Comfy-Org/Depth-Anything-3) |\n| 5 | `models/checkpoints/sam3.1_multiplex_fp16.safetensors` | [Comfy-Org/sam3.1](https://huggingface.co/Comfy-Org/sam3.1) |\n\n### SVD-XT: fetch only the slice diffusers needs (~1.2 GiB, not 21.5 GiB)\n\n```\n/home/user/work/ComfyUI/venv/bin/hf download stabilityai/stable-video-diffusion-img2vid-xt \\\n  --local-dir /home/user/work/ComfyUI/models/any2bokeh/svd_xt \\\n  --include \"model_index.json\" \"LICENSE.md\" \"scheduler/*\" \"feature_extractor/*\" \\\n            \"image_encoder/config.json\" \"image_encoder/model.fp16.safetensors\" \\\n            \"unet/config.json\" \"vae/config.json\"\n```\n\n"
+      },
+      "color": "#222",
+      "bgcolor": "#000"
+    },
+    {
+      "id": 28,
+      "type": "AddLabel",
+      "pos": [
+        2604.986695376683,
+        463.73837974402056
+      ],
+      "size": [
+        270,
+        270
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 39
+        },
+        {
+          "name": "caption",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            41
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-kjnodes",
+        "ver": "e8e88f7c88e3f6205b122f5de87e69a09fbce5ac",
+        "Node name for S&R": "AddLabel"
+      },
+      "widgets_values": [
+        10,
+        2,
+        48,
+        32,
+        "white",
+        "black",
+        "FreeMono.ttf",
+        "Original",
+        "up"
+      ],
+      "widgets_values_named": {
+        "text_x": 10,
+        "text_y": 2,
+        "height": 48,
+        "font_size": 32,
+        "font_color": "white",
+        "label_color": "black",
+        "font": "FreeMono.ttf",
+        "text": "Original",
+        "direction": "up"
+      }
+    },
+    {
+      "id": 29,
+      "type": "AddLabel",
+      "pos": [
+        2603.5023660997117,
+        527.5078739573024
+      ],
+      "size": [
+        270,
+        270
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 40
+        },
+        {
+          "name": "caption",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            42
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-kjnodes",
+        "ver": "e8e88f7c88e3f6205b122f5de87e69a09fbce5ac",
+        "Node name for S&R": "AddLabel"
+      },
+      "widgets_values": [
+        10,
+        2,
+        48,
+        32,
+        "white",
+        "black",
+        "FreeMono.ttf",
+        "Any-to-Bokeh",
+        "up"
+      ],
+      "widgets_values_named": {
+        "text_x": 10,
+        "text_y": 2,
+        "height": 48,
+        "font_size": 32,
+        "font_color": "white",
+        "label_color": "black",
+        "font": "FreeMono.ttf",
+        "text": "Any-to-Bokeh",
+        "direction": "up"
+      }
+    },
+    {
+      "id": 30,
+      "type": "ImageConcatMulti",
+      "pos": [
+        2859.9260232402416,
+        388.1416186690613
+      ],
+      "size": [
+        270,
+        150
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_1",
+          "type": "IMAGE,MASK",
+          "link": 41
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE,MASK",
+          "link": 42
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "IMAGE",
+          "links": [
+            43
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-kjnodes",
+        "ver": "e8e88f7c88e3f6205b122f5de87e69a09fbce5ac",
+        "Node name for S&R": "ImageConcatMulti"
+      },
+      "widgets_values": [
+        2,
+        "right",
+        false,
+        null
+      ],
+      "widgets_values_named": {
+        "inputcount": 2,
+        "direction": "right",
+        "match_image_size": false,
+        "Update inputs": null
+      }
+    }
+  ],
+  "links": [
+    [
+      18,
+      1,
+      0,
+      2,
+      0,
+      "VIDEO"
+    ],
+    [
+      21,
+      4,
+      0,
+      5,
+      0,
+      "DA3_GEOMETRY"
+    ],
+    [
+      23,
+      5,
+      0,
+      12,
+      0,
+      "A2B_DISPARITY"
+    ],
+    [
+      25,
+      11,
+      0,
+      13,
+      0,
+      "A2B_PIPE"
+    ],
+    [
+      26,
+      2,
+      0,
+      13,
+      1,
+      "IMAGE"
+    ],
+    [
+      27,
+      5,
+      0,
+      13,
+      2,
+      "A2B_DISPARITY"
+    ],
+    [
+      30,
+      2,
+      1,
+      14,
+      1,
+      "AUDIO"
+    ],
+    [
+      32,
+      5,
+      1,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      33,
+      12,
+      0,
+      17,
+      0,
+      "IMAGE"
+    ],
+    [
+      34,
+      12,
+      1,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      35,
+      5,
+      0,
+      20,
+      0,
+      "A2B_DISPARITY"
+    ],
+    [
+      36,
+      20,
+      0,
+      13,
+      3,
+      "A2B_FOCUS"
+    ],
+    [
+      37,
+      20,
+      0,
+      12,
+      1,
+      "A2B_FOCUS"
+    ],
+    [
+      39,
+      2,
+      0,
+      28,
+      0,
+      "IMAGE"
+    ],
+    [
+      40,
+      13,
+      0,
+      29,
+      0,
+      "IMAGE"
+    ],
+    [
+      41,
+      28,
+      0,
+      30,
+      0,
+      "IMAGE"
+    ],
+    [
+      42,
+      29,
+      0,
+      30,
+      1,
+      "IMAGE"
+    ],
+    [
+      43,
+      30,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      19,
+      3,
+      0,
+      4,
+      0,
+      "DA3_MODEL"
+    ],
+    [
+      20,
+      2,
+      0,
+      4,
+      1,
+      "IMAGE"
+    ],
+    [
+      31,
+      14,
+      0,
+      15,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.6452495565231394,
+      "offset": [
+        1543.0046014123945,
+        309.2186869042947
+      ]
+    },
+    "anomalous_hashes": {},
+    "frontendVersion": "1.53.6",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "extensions": {
+    "seed_widgets": {
+      "13": 12
+    }
+  },
+  "version": 0.4
+}
