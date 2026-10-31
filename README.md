@@ -8,6 +8,8 @@ Depth and masks are **not** reimplemented here — they come from ComfyUI core n
 
 ## Example
 
+https://github.com/user-attachments/assets/8780c2cb-989a-4838-afe4-35040e0b255a
+
 ## Installation
 1. Go to `ComfyUI/custom_nodes`
 2. `git clone https://github.com/alexanz314/ComfyUI-AnyToBokeh`
