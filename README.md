@@ -10,6 +10,10 @@ Depth and masks are **not** reimplemented here — they come from ComfyUI core n
 
 https://github.com/user-attachments/assets/8780c2cb-989a-4838-afe4-35040e0b255a
 
+Focus changes are configured via the `Any-to-Bokeh: Focus Control (curve / advanced text)` node. The format is "frame_number:relative_depth;" - with each keyframe entry separated by a semicolon.
+
+<img width="559" height="517" alt="curve" src="https://github.com/user-attachments/assets/aed45dd1-c604-4df8-91cb-c12eea00163c" />
+
 ## Installation
 1. Go to `ComfyUI/custom_nodes`
 2. `git clone https://github.com/alexanz314/ComfyUI-AnyToBokeh`
